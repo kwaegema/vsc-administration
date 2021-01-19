@@ -22,6 +22,7 @@ import logging
 
 from vsc.accountpage.sync import Sync
 from vsc.administration.user import update_user_status
+from vsc.administration.vo import update_vo_status
 from vsc.administration.tier1c import VscTier1cUser, VscTier1cProject
 from vsc.utils import fancylogger
 
@@ -45,7 +46,7 @@ class VscTier1cSync(Sync):
     Sync the tier1c users, projects and quota
     """
 
-    def process_t1_users(self, account_ids, quotas, storage_name, dry_run=False):
+    def process_t1_users(self, accounts, quotas, storage_name, dry_run=False):
         """
         Process the users.
         Note: If all users are part of a project, and only have actual data/directories inside projects
@@ -55,10 +56,10 @@ class VscTier1cSync(Sync):
         error_users = []
         ok_users = []
 
-        for vsc_id in sorted(account_ids):
+        for account in sorted(accounts):
 
             try:
-                user = VscTier1cUser(vsc_id, storage_name=storage_name,
+                user = VscTier1cUser(account.vsc_id, account=account, storage_name=storage_name,
                     rest_client=self.apc, use_user_cache=True, dry_run=dry_run)
                 user.prepare_dirs()
                 update_user_status(user, self.apc)
@@ -103,7 +104,7 @@ class VscTier1cSync(Sync):
             try:
                 prj.create_fileset()
                 prj.set_quota()
-
+                update_vo_status(prj) #FIXME: ...
                 modified_member_list = prj.modified_members(datestamp)
                 factory = lambda pid: VscTier1cUser(pid,
                                                     storage_name=storage_name,

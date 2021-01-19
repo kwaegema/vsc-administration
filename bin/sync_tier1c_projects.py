@@ -41,7 +41,7 @@ fancylogger.setLogLevelInfo()
 VscTier1cSync.CLI_OPTIONS = {
     'nagios-check-interval-threshold': NAGIOS_CHECK_INTERVAL_THRESHOLD,
     'user': ('process users', None, 'store_true', False),
-    'projects': ('process projects', None, 'store_true', False),
+    'projects': ('process projects', None, 'store_true', True),
 }
 
 if __name__ == '__main__':
