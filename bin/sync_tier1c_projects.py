@@ -19,10 +19,6 @@ This script synchronises the users and projects from the HPC account page to the
 For each (active) user/project, the following tasks are done:
     - create directories in the scratch filesystem
     - chown this directory to the user/group
-    - create the basic directories and scripts if they do not yet exist (.ssh, .bashrc, ...)
-    - drop the user's public keys in the appropriate location
-    - chmod the files to the correct value
-    - chown the files (only changes things upon first invocation and new files)
 
 The script should result in an idempotent execution, to ensure nothing breaks.
 """
